@@ -22,10 +22,7 @@ jobs:
         run: docker build -t mes-tests-playwright .
 
       - name: Run Docker Image
-        run: docker run --rm mes-tests-playwright
-
-      - name: Run playwright test
-        run: npx playwright test --reporter=html
+        run: docker run --rm -v ${{ github.workspace }}/playwright-report:/app/playwright-report mes-tests-playwright
 
       - name: Upload PW report
         uses: actions/upload-artifact@v4
