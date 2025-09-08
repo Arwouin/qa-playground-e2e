@@ -13,8 +13,8 @@ test.describe('Test E2E contenant login, ajout au panier et vérifications du fo
 
         await loginPage.navigateTo('');
         await loginPage.login(
-            users.user.username,
-            users.user.password
+            users.user_standard.username,
+            users.user_standard.password
         );
         await dashboardPage.waitForLoad();
     });

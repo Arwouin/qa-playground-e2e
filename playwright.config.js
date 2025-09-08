@@ -4,7 +4,7 @@ module.exports = defineConfig({
     use: {
         headless: true,
         launchOptions: {
-            slowMo: 1000,
+            slowMo: 10,
         }
     }
 })
