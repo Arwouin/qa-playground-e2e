@@ -35,6 +35,21 @@ class NavigateDashboard extends BasePage {
         await removeButton.click();
     }
 
+    async purchaseItem(first, last, zip) {
+        const checkout = this.page.locator('a.btn_action.checkout_button');
+        await checkout.waitFor({ state: "visible" });
+        await checkout.click();
+        
+        await this.page.fill('#first-name', first);
+        await this.page.fill('#last-name', last);
+        await this.page.fill('#postal-code', zip);
+
+        await this.page.locator('input[value="CONTINUE"]').click();
+        await this.page.waitForURL('https://www.saucedemo.com/v1/checkout-step-two.html');
+
+        await this.page.locator('a.btn_action.cart_button').click();
+    }
+
     async waitForLoad() {
         await this.products.first().waitFor({ state: "visible" });
     }

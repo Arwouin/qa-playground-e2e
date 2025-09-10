@@ -44,4 +44,47 @@ test.describe("Utilisation du dashboard via les différents utilisateurs", () =>
             expect(count).toBe(0);
         });
     });
+
+    test("Utilisation du dashboard avec le 'problem user'", async ({ page }) => {
+        await test.step("Connexion en tant que problem_user", async () => {
+            await loginPage.login(
+                users.problem_user.username,
+                users.problem_user.password
+            );
+            await expect(page).toHaveURL('https://www.saucedemo.com/v1/inventory.html');
+        });
+
+        await test.step("Anticipation de bug", async () => {
+            await page.screenshot ({ path: "screenshots/screenshots-dashboard/page_as_problem_user.png", fullPage: true })
+        });
+    });
+
+    test("Utilisation du dashboard avec le 'performance_glitch_user' + mesurer le temps de chargement", async ({ page }) => {
+        const loadStart = Date.now();
+
+        await test.step("Connexion en tant que performance_glitch_user", async () => {
+            await loginPage.login(
+                users.performance_glitch_user.username,
+                users.performance_glitch_user.password
+            );
+        });
+
+        await test.step("Attendre le chargement de la page", async () => {
+            await expect(page).toHaveURL('https://www.saucedemo.com/v1/inventory.html');
+            await dashboardNav.waitForLoad();
+        });
+
+        await test.step("Mesure du temps de chargement et console.log", async () => {
+            const loadEnd = Date.now();
+            const time = loadEnd - loadStart;
+            console.log(`Temps de chargement = ${time} ms`);
+        });
+
+        await test.step("Screenshot et vérification que la page soit bien chargée", async () => {
+            await page.screenshot({
+                path: "screenshots/screenshots-dashboard/glitch_user_page.png",
+                fullPage: true 
+            });
+        });
+    });
 });
